@@ -1,0 +1,15 @@
+{
+  "name": "task-runner",
+  "version": "1.0.0",
+  "description": "Run each command from a bash file in parallel (limited to the amount of available CPUs)",
+  "bin": {
+    "task-runner": "./bin/task-runner.js"
+  },
+  "main": "./bin/task-runner.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szanata/task_runner.git"
+  },
+  "author": "Stéfano Zanata <contato@szanata.com>",
+  "license": "MIT"
+}
