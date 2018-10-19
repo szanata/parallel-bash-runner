@@ -1,6 +1,6 @@
 {
   "name": "parallel-bash-runner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run each command from a bash file in parallel (limited to the amount of available CPUs)",
   "bin": {
     "bash-runner": "./bin/bash-runner.js"
