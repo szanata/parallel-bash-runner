@@ -61,6 +61,7 @@ const printPassMessage = time => {
 const startTime = Date.now();
 
 const tasksFile = process.argv[2];
+const failOnStderr = process.argv[3] === '--fail-on-stderr';
 
 const tasks = Buffer.from( fs.readFileSync( tasksFile ) ).toString().split( '\n' )
   .filter( line => !line.startsWith( '#' ) && line.trim().length !== 0 );
@@ -99,7 +100,7 @@ const runTask = task => {
   proc.on( 'exit', code => {
     running--;
     imcompleteCount--;
-    const errored = code === 1 || stderr.length > 0;
+    const errored = code === 1 || (failOnStderr ? stderr.length > 0 : false);
 
     printTaskResult( task, i, errored, stdout, stderr );
 
