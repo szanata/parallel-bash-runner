@@ -26,11 +26,9 @@ const startTime = Date.now();
 const tasksFile = process.argv[2];
 const rawCmd = Array.from( process.argv ).join(' ');
 
-console.log( tasksFile, rawCmd)
-
 const failOnStderr = rawCmd.includes( '--fail-on-stderr' );
-const noPrintStdout = rawCmd.includes( '--no-stdout' );
-const noPrintStderr = rawCmd.includes( '--no-stderr' );
+const printStdout = rawCmd.includes( '--no-stdout' ) ? false : true;
+const printStderr = rawCmd.includes( '--no-stderr' ) ? false : true;
 
 /**
  * Output interactions
@@ -46,12 +44,12 @@ const printTaskResult = ( task, index, errored, stdout, stderr ) => {
   console.log( `\n${ylw}${bold}${uds}Task ${index + 1} results${clear}` );
   console.log( `${cyan}[cmd]${clear} ${task}\n` );
 
-  if ( !noPrintStdout ) {
+  if ( printStdout ) {
     console.log( `${green}[stdout]${clear}` );
     console.log( stdout.join( '' ) );
   }
 
-  if ( stderr.length > 0 && !noPrintStderr ) {
+  if ( printStderr && stderr.length > 0 ) {
     console.log( `${red}[stderr]${clear}` );
     console.log( stderr.join( '' ) );
   }
