@@ -1,11 +1,11 @@
 {
   "name": "parallel-bash-runner",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Run each command from a bash file in parallel (limited to the amount of available CPUs)",
   "bin": {
-    "bash-runner": "./bin/bash-runner.js"
+    "bash-runner": "./bin/runner.js"
   },
-  "main": "./bin/bash-runner.js",
+  "main": "./bin/runner.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/szanata/task_runner.git"

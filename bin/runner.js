@@ -17,6 +17,21 @@ const bgRed = '\x1b[41m';
 const bgGreen = '\x1b[42m';
 const uds = '\x1b[4m';
 
+
+/**
+ * Main logic
+ */
+const startTime = Date.now();
+
+const tasksFile = process.argv[2];
+const rawCmd = Array.from( process.argv ).join(' ');
+
+console.log( tasksFile, rawCmd)
+
+const failOnStderr = rawCmd.includes( '--fail-on-stderr' );
+const noPrintStdout = rawCmd.includes( '--no-stdout' );
+const noPrintStderr = rawCmd.includes( '--no-stderr' );
+
 /**
  * Output interactions
  */
@@ -31,10 +46,12 @@ const printTaskResult = ( task, index, errored, stdout, stderr ) => {
   console.log( `\n${ylw}${bold}${uds}Task ${index + 1} results${clear}` );
   console.log( `${cyan}[cmd]${clear} ${task}\n` );
 
-  console.log( `${green}[stdout]${clear}` );
-  console.log( stdout.join( '' ) );
+  if ( !noPrintStdout ) {
+    console.log( `${green}[stdout]${clear}` );
+    console.log( stdout.join( '' ) );
+  }
 
-  if ( stderr.length > 0 ) {
+  if ( stderr.length > 0 && !noPrintStderr ) {
     console.log( `${red}[stderr]${clear}` );
     console.log( stderr.join( '' ) );
   }
@@ -54,14 +71,6 @@ const printPassMessage = time => {
   const message = `All tasks were executed with success in ${roundTime( time )}!`;
   console.log( `${bold}${green}${message}${clear}` );
 };
-
-/**
- * Main logic
- */
-const startTime = Date.now();
-
-const tasksFile = process.argv[2];
-const failOnStderr = process.argv[3] === '--fail-on-stderr';
 
 const tasks = Buffer.from( fs.readFileSync( tasksFile ) ).toString().split( '\n' )
   .filter( line => !line.startsWith( '#' ) && line.trim().length !== 0 );
@@ -100,7 +109,7 @@ const runTask = task => {
   proc.on( 'exit', code => {
     running--;
     imcompleteCount--;
-    const errored = code === 1 || (failOnStderr ? stderr.length > 0 : false);
+    const errored = code === 1 || (failOnStderr && stderr.length > 0);
 
     printTaskResult( task, i, errored, stdout, stderr );
 
